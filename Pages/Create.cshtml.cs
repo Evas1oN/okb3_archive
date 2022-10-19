@@ -57,6 +57,7 @@ namespace okb3_archive.Pages.ArchiveEntry
             {
                 File = await CompressFile(Document)
             };
+
             FileEntry.FileName = Document.FileName + ".gz";
             FileEntry.MD5Hash = CalculateMd5Hash(FileEntry.ZippedFile.File);
 

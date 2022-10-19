@@ -14,10 +14,12 @@ namespace okb3_archive.Pages.DocumentTypes
     public class EditModel : PageModel
     {
         private readonly okb3_archive.Data.ApplicationContext _context;
+        private readonly IConfiguration _configuration;
 
-        public EditModel(okb3_archive.Data.ApplicationContext context)
+        public EditModel(okb3_archive.Data.ApplicationContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -43,6 +45,12 @@ namespace okb3_archive.Pages.DocumentTypes
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!User.IsInRole(_configuration.GetSection("DocumentTypeMaintainerRole").Get<string>()))
+            {
+                TempData["Error"] = "” вас нет прав дл€ совершени€ данного действи€";
+                return RedirectToPage("./Index");
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();

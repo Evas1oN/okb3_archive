@@ -14,14 +14,16 @@ namespace okb3_archive.Pages.DocumentTypes
     public class DeleteModel : PageModel
     {
         private readonly okb3_archive.Data.ApplicationContext _context;
+        private readonly IConfiguration _configuration;
 
-        public DeleteModel(okb3_archive.Data.ApplicationContext context)
+        public DeleteModel(okb3_archive.Data.ApplicationContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [BindProperty]
-      public DocumentType DocumentType { get; set; } = default!;
+        public DocumentType DocumentType { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -44,9 +46,14 @@ namespace okb3_archive.Pages.DocumentTypes
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
+
+            if (!User.IsInRole(_configuration.GetSection("DocumentTypeMaintainerRole").Get<string>()))
+            {
+                TempData["Error"] = "У вас нет прав для совершения данного действия";
+                return RedirectToPage("./Index");
             }
+                
 
             var isContainingValues = await _context.DocumentTypes
                 .Where(x => x.Id == id)

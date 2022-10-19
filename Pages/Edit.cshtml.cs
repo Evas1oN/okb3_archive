@@ -14,10 +14,12 @@ namespace okb3_archive.Pages.Archive
     public class EditModel : PageModel
     {
         private readonly okb3_archive.Data.ApplicationContext _context;
-
-        public EditModel(okb3_archive.Data.ApplicationContext context)
+        private readonly IConfiguration _configuration;
+        public bool IsDocumentTypeMaintainer = false;
+        public EditModel(okb3_archive.Data.ApplicationContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -26,9 +28,7 @@ namespace okb3_archive.Pages.Archive
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null || _context.ArchivedFiles == null)
-            {
                 return NotFound();
-            }
 
             var archivedfile =  await _context.ArchivedFiles.FirstOrDefaultAsync(m => m.Id == id);
             if (archivedfile == null)

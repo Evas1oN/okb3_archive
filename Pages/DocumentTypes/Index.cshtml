@@ -7,9 +7,15 @@
 
 <h1>Типы документов</h1>
 
-<p>
-    <a asp-page="Create">Новый тип</a>
-</p>
+
+@if(Model.IsDocumentTypeMaintainer){
+    <p>
+        <a asp-page="Create">Новый тип</a>
+    </p>
+}
+
+<p class="text-danger">@TempData["Error"]</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -26,8 +32,13 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Изменить</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Удалить</a>
+                @if(Model.IsDocumentTypeMaintainer)
+                {
+                    <span>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Изменить</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Удалить</a>
+                    </span>
+                }
             </td>
         </tr>
 }
