@@ -1,0 +1,32 @@
+@page
+@model okb3_archive.Pages.DocumentTypes.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Изменение</h1>
+
+<h4>Тип документа</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DocumentType.Id" />
+            <div class="mb-3">
+                <label asp-for="DocumentType.Name" class="control-label"></label>
+                <input asp-for="DocumentType.Name" class="form-control" />
+                <span asp-validation-for="DocumentType.Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Назад</a>
+</div>
+
